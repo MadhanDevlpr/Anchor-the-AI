@@ -6,10 +6,10 @@ import os
 import datetime
 import speech_recognition as sr  # pip install SpeechRecogniton
 import webbrowser  # Pre-Installed Library
+name="User"
 
 
-
-client = wolframalpha.Client('QVU59W-GH87QRUQT8')
+client = wolframalpha.Client(f'QVU59W-GH87QRUQT8')
 Time = datetime.datetime.now().strftime("%H:%M:%S")
 hours = datetime.datetime.now().strftime("%H")
 minutes = datetime.datetime.now().strftime("%M")
@@ -30,12 +30,13 @@ mic = sr.Microphone()
 tday = datetime.date.today()
 # Initializing speak function
 engine = pyttsx3.init()
-voices = engine.getProperty('voices')
-engine.setProperty('voice', voices[len(voices)-4].id)
+voices = engine.getProperty(f'voices')
+engine.setProperty(f'voice', voices[len(voices)-4].id)
+engine. setProperty("volume", 200)
 
 
 def speak(audio):
-    print('Jarvis: '+audio)
+    print(f'Anchor: '+audio)
     engine.say(audio)
     engine.runAndWait()
 
@@ -44,35 +45,30 @@ def speak(audio):
 def wishMe():
     time = int(datetime.datetime.now().hour)
     if time >= 0 and time < 12:
-        speak('Good Morning Master!')
+        speak(f'Good Morning {name}!')
 
     if time >= 12 and time < 18:
-        speak('Good Afternoon Master!')
+        speak(f'Good Afternoon {name}!')
 
     if time >= 18 and time !=0:
-        speak('Good Evening Master!')
+        speak(f'Good Evening {name}!')
 
 
 
 def myCommand():
-
-
-
     r = sr.Recognizer()
     with sr.Microphone() as source:
-        print('')
+        print(f'')
         print("Listening...")
         r.pause_threshold = 1
-        r.adjust_for_ambient_noise(source, duration=1)
+        hearing = r.adjust_for_ambient_noise(source, duration=1)
         audio = r.listen(source)
     try:
         query = r.recognize_google(audio, language='en-in')
-        print('User: ' + query)
-
-
+        print(f'User: ' + query)
     except:
-        speak("Sorry about that, I didn't hear that properly , Try typing the command")
-        query = str(input('Command: '))
+        speak('I can\'t hear that properly, try typing the command')
+        query = input('Enter your command: ')
     return query
 
 
@@ -83,127 +79,130 @@ if __name__ == '__main__':
     wishMe()
     while True:
         command = myCommand().lower()
-        if 'open google' in command or 'search on google' in command:
-            speak('Okay')
-            webbrowser.open('https://www.google.com.tw/?#q=')
+        if 'google' in command:
+            speak(f'Should I search for something?')
+            searchDataAnswer = myCommand().lower()
+            if 'ye' in searchDataAnswer:
+                speak(f'Okay, tell me what to search for')
+                searchData = myCommand().lower()
+                try:
+                    webbrowser.open(f'https://www.google.com/search?q='+searchData)
+                except:
+                    speak(f'Error searching, trying connecting to your net or see if your microphone works')
+            else:
+                speak(f'Okay,opening google for you')
+                webbrowser.open(f'https://www.google.com/search?q=')
         elif 'close' in command:
-            speak('See you later Master ')
+            speak(f'See you later {name} ')
             sys.exit()
 
-        elif 'open map' in command:
-            speak('What should I search?')
+        elif 'map' in command:
+            speak(f'Should I search for the place?')
+            searchDataAnswer = myCommand().lower()
             run = True
             while run:
-                location = myCommand().lower()
-                try:
-                    webbrowser.open('https://www.google.com/maps/place/'+location)
-                    run = False
-                except:
-                    speak('Sorry, Unable to search')
-                    run = False
+                if 'ye' in searchDataAnswer:
+                    speak(f'Okay, tell me what to search for')
+                    searchData = myCommand().lower()
+                    try:
+                        webbrowser.open(f'https://www.google.com/maps/place/'+searchData)
+                        run = False
+
+                    except:
+                        speak(f'Error searching, trying connecting to your net or see if your microphone works')
+                        run = False
+                else:
+                    speak(f'Okay,opening google maps for you')
+                    webbrowser.open(f'https://www.google.com/maps')
+                    run=False
 
 
-        elif 'open youtube' in command:
-            speak('What should I search?')
+        elif ' youtube' in command:
+            speak(f'What should I search?')
             video = myCommand().lower()
             try:
 
-                webbrowser.open('https://www.youtube.com/results?search_query='+video)
-                speak('Youtube is opened')
+                webbrowser.open(f'https://www.youtube.com/results?search_query='+video)
+                speak(f'Youtube is opened')
             except:
-                speak('Sorry, Unable to search on youtube')
+                speak(f'Sorry, Unable to search on youtube')
 
-        elif 'open gmail' in command:
-            webbrowser.open('https://mail.google.com/mail/u/0/#inbox')
-            speak('Gmail is opened')
+        elif ' gmail' in command:
+            webbrowser.open(f'https://mail.google.com/mail/u/0/#inbox')
+            speak(f'Gmail is opened')
 
-        elif 'open canva' in command:
-            webbrowser.open('https://www.canva.com/')
-            speak('Canva is opened')
+        elif ' canva' in command:
+            webbrowser.open(f'https://www.canva.com/')
+            speak(f'Canva is opened')
 
         elif "what is the date" in command:
-            speak('The date is ' + str(tday.day) + ' master!')
+            speak(f'The date is ' + str(tday.day) + ' {name}!')
 
         elif "what's the date" in command:
-            speak('The date is ' + str(tday.day) + ' master!')
+            speak(f'The date is ' + str(tday.day) + ' {name}!')
 
         elif "what is today's date" in command:
-            speak('The date is ' + str(tday.day) + ' master!')
+            speak(f'The date is ' + str(tday.day) + ' {name}!')
 
         elif "what's today's date" in command:
-            speak('The date is ' + str(tday.day) + ' master!')
+            speak(f'The date is ' + str(tday.day) + ' {name}!')
 
         elif "what's the month" in command:
-            speak('The month is ' + str(tday.month) + ' master!')
+            speak(f'The month is ' + str(tday.month) + ' {name}!')
 
         elif "what is the month" in command:
-            speak('The month is ' + str(tday.month) + ' master!')
+            speak(f'The month is ' + str(tday.month) + ' {name}!')
 
         elif 'who are you' in command:
-            speak('My name is Jarvis , I am your Desktop assistant')
+            speak(f'My name is Anchor , I am your Desktop assistant')
 
         elif 'how are you' in command:
-            speak('I am fine Master!')
+            speak(f'I am fine {name}!')
 
-        elif 'open amazon' in command:
-            speak('What should I search?')
+        elif ' amazon' in command:
+            speak(f'What should I search?')
             product = myCommand().lower()
             try:
-                webbrowser.open('https://www.amazon.in/s?k='+product)
-                speak('okay!')
+                webbrowser.open(f'https://www.amazon.in/s?k='+product)
+                speak(f'okay!')
             except:
-                speak('sorry, unable to search')
+                speak(f'sorry, unable to search')
 
-        elif 'open scratch' in command:
-            webbrowser.open('https://scratch.mit.edu/#')
-            speak('Scratch is opened')
+        elif ' scratch' in command:
+            webbrowser.open(f'https://scratch.mit.edu/#')
+            speak(f'Scratch is opened')
 
         elif 'hello' in command:
-            speak('Hello Master!')
+            speak(f'Hello {name}!')
 
         elif 'what can you do' in command:
-            speak('I can control your desktop, and make all voice controlled')
+            speak(f'I can control your desktop, and make all voice controlled')
 
-        elif 'open disney' in command:
-            speak('What should I search?')
+        elif ' disney' in command:
+            speak(f'What should I search?')
             movie = myCommand().lower()
             try:
-                webbrowser.open('https://www.hotstar.com/in/search?q='+movie)
-                speak('okay!')
+                webbrowser.open(f'https://www.hotstar.com/in/search?q='+movie)
+                speak(f'okay!')
             except:
-                speak('sorry, unable to search!')
+                speak(f'sorry, unable to search!')
 
-        elif 'open browser' in command:
-            webbrowser.open('https://www.google.com.tw/?#q=')
-            speak('Browser is opened')
+        elif ' browser' in command:
+            webbrowser.open(f'#')
+            speak(f'Browser is opened')
 
-        elif 'open hindu' in command:
-            webbrowser.open('https://ywc.thehindu.com/junior/')
-            speak('Young world is opened')
+        elif ' command prompt' in command:
+            speak(f'Yes {name}')
+            os.startfile(f'C:/Windows/System32/cmd.lnk')
 
-        elif 'open whatsapp' in command:
-            speak('Yes master')
-            os.startfile("E:/Whatsapp.lnk")
+        elif ' notepad' in command:
+            speak(f'Notepad is opened!')
+            os.startfile(f'C:/Users/P {name} AADITHYA/AppData/Roaming/Microsoft/Windows/Start Menu/Programs/Accessories/Notepad.lnk')
 
-        elif 'open my books' in command:
-            speak('Yes master')
-            os.startfile('C:/Users/P MADHAN AADITHYA/OneDrive/Desktop/VII CBSE')
+        elif ' word' in command:
+            os.startfile(f'C:/ProgramData/Microsoft/Windows/Start Menu/Programs/Word.lnk')
+            speak(f'Microsoft word is opened!')
 
-        elif 'open command prompt' in command:
-            speak('Yes Master')
-            os.startfile('C:/Windows/System32/cmd.lnk')
-
-        elif 'open notepad' in command:
-            speak('Notepad is opened!')
-            os.startfile('C:/Users/P MADHAN AADITHYA/AppData/Roaming/Microsoft/Windows/Start Menu/Programs/Accessories/Notepad.lnk')
-
-        elif 'open word' in command:
-            os.startfile('C:/ProgramData/Microsoft/Windows/Start Menu/Programs/Word.lnk')
-            speak('Microsoft word is opened!')
-
-        elif 'open my projects' in command:
-            os.startfile('E:/PycharmProjects')
-            speak('I have opened your projects, Master!')
 
         elif "what's the time" in command:
             time()
@@ -212,43 +211,31 @@ if __name__ == '__main__':
             time()
 
         elif 'search on wikipedia' in command:
-            speak('Tell me what do you want to search')
+            speak(f'Tell me what do you want to search')
             run = True
             while run:
 
                 dataa = myCommand()
 
                 data = wikipedia.summary(dataa)
-                speak('Accordind to wikipedia,')
+                speak(f'Accordind to wikipedia,')
 
 
 
                 speak(data)
                 run = False
 
-        elif 'play music' in command:
-            os.startfile('C:/Users/P MADHAN AADITHYA/Music/Video Projects/M.mp3' or 'C:/Users/P MADHAN AADITHYA/Music/Video Projects/A.mp3')
-            speak("Here is your music , Master")
-
-        elif 'play master song' in command:
-            speak('Yes Master!')
-            webbrowser.open('https://www.youtube.com/watch?v=fRD_3vJagxk')
-
-        elif 'play game' in command:
-            speak('Okay!')
-            os.startfile('E:/PycharmProjects/Games/Pingpong.py')
 
         elif 'shutdown' in command:
             closing = True
-            speak('Do you really need to shutdown?')
+            speak(f'Do you really need to shutdown?')
             while closing:
                 yesorno = myCommand()
                 if 'yes' in yesorno.lower():
-                    speak('Have a good day!, Master!')
-                    os.system('shutdown /s /t 0')
+                    os.system(f'shutdown /s /t 0')
                     sys.exit()
                 else:
-                    speak("It's a right choice Master!")
+                    speak("It's a right choice {name}!")
                     closing = False
 
 
@@ -257,22 +244,23 @@ if __name__ == '__main__':
         else:
             try:
                 try:
-                    speak('Searching...')
+                    speak(f'Searching...')
                     res = client.query(command)
                     answer = next(res.results).text
 
-                    speak('According to the net,')
+                    speak(f'According to the net,')
                     speak(answer)
                 except:
-                    speak('According to wikipedia')
+                    speak(f'searching for it, {name}')
                     data = wikipedia.summary(command, sentences=2)
                     speak(data)
 
             except:
-                webbrowser.open('https://www.google.com.tw/?#q='+command)
+                speak(f'No results for it, opening it in google')
+                webbrowser.open(f'https://www.google.com/search?q='+command)
 
 # This is fantastic
-# This is made by Madhan Aadithya
+# This is made by {name} Aadithya
 # Started on 5 December 2020
 # Finished on 6 February 2021
 #____X____#
