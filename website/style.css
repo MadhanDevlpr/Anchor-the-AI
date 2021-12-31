@@ -39,3 +39,42 @@ a{
     font-weight: 900;
     border-radius: 5px;
 }
+@media(max-width:992px){
+    
+img{
+    width: 20vh;
+    height: 20vh;
+    position: absolute;
+    top:15%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+}
+h1{
+    font-size: 1.8rem;
+    position: absolute;
+    top:40%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    display: flex;
+    flex-direction: row;
+}
+p{
+    position: absolute;
+    top:60%;
+    left: 50%;
+    width: 250px;
+    transform: translate(-50%,-50%);
+}
+a{
+    position: absolute;
+    top:75%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    text-decoration: none;
+    color: black;
+    background: #5ce1e6;
+    padding: 10px 20px 10px 20px;
+    font-weight: 900;
+    border-radius: 5px;
+}
+}
