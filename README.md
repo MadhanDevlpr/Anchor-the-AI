@@ -2,4 +2,4 @@
 
 A console based application that can automate some thing in your pc.
 
-Download - https://drive.google.com/drive/folders/1GnK8tagj2oJzqpyYJNllvCJvTeGZGKcM?usp=sharing
+Download - https://anchor-ai.netlify.app/anchor_setup.exe
